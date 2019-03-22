@@ -33,7 +33,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testSearchPlaceholder() {
+    public void testSearchForElementsAndCancel() {
         waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
                 "Can't find element to init search on first page", 5);
 
