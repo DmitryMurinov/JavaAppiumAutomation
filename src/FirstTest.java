@@ -33,40 +33,23 @@ public class FirstTest {
     }
 
     @Test
-    public void testSearchForElementsAndCancel() {
+    public void testWordsAfterSearch() {
         waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
                 "Can't find element to init search on first page", 5);
 
-        String textToSearch = "USA";
+        String textToSearch = "Russia";
 
         waitForElementAndSendKeys(By.xpath("//*[contains (@resource-id, 'search_src_text')]"),
                                     "Can't find search input", textToSearch, 5);
 
         List<WebElement> foundArticles = waitForElementsPresent(By.xpath(
-                "//*[contains (@resource-id, 'org.wikipedia:id/page_list_item_title') and " +
-                        "contains(@text, '" + textToSearch+ "')]"),
+                "//*[contains (@resource-id, 'org.wikipedia:id/page_list_item_title')]"),
                 "No elements found");
 
-        Assert.assertTrue("There are less than 2 elements", foundArticles.size() > 1);
-
-        waitForElementAndClick(By.xpath("//*[contains (@resource-id, 'org.wikipedia:id/search_close_btn')]"),
-                "Can't find cancel by X element",
-                5);
-
-        waitForElementNotVisible(By.xpath("//*[contains (@resource-id, 'org.wikipedia:id/page_list_item_title') and " +
-                                                 "contains(@text, '" + textToSearch+ "')]"),
-                "Searched elements still here",
-                5);
-    }
-
-    @Test
-    public void  testCancelSearch(){
-        waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Can't find element to init search on first page", 5);
-
-        WebElement element_search_to_enter_text = waitForElementPresent(
-                By.xpath("//*[contains (@resource-id, 'search_src_text')]"),
-                "Can't find search input");
+        for(WebElement article : foundArticles){
+            Assert.assertTrue("Element don't contains expected value = " + textToSearch,
+                    article.getText().toLowerCase().contains(textToSearch.toLowerCase()));
+        }
     }
 
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutSec){
